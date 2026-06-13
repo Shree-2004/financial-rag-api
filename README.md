@@ -1,4 +1,4 @@
-# 💼 Financial Document Management System with RAG
+#  Financial Document Management System with RAG
 
 > A production-ready **FastAPI** application for managing financial documents with AI-powered semantic search, LLM-generated answers (RAG), and enterprise-grade role-based access control.
 
@@ -10,7 +10,7 @@
 
 ---
 
-## 🌟 What This Project Does
+##  What This Project Does
 
 Organizations deal with hundreds of financial documents — reports, invoices, contracts, audits. Finding specific information across all of them is slow and manual.
 
@@ -22,23 +22,23 @@ This system solves that by:
 
 ---
 
-## ✨ Key Features
+## Key Features
 
 | Feature | Description |
 |---|---|
-| 🔐 **JWT Authentication** | Secure login & registration with Bearer tokens |
-| 👥 **Role-Based Access Control** | Admin, Financial Analyst, Auditor, Client roles |
-| 🏢 **Multi-Tenant Isolation** | Clients only see their own company's documents |
-| 📄 **Document Management** | Upload, list, update, delete PDF & TXT documents |
-| 🔍 **Semantic Search** | Vector similarity search using `all-MiniLM-L6-v2` embeddings |
-| 🏆 **Cross-Encoder Reranking** | Reranks Top-20 results to surface the best Top-5 |
-| 🤖 **RAG Q&A** | LLM-generated answers with source citations |
-| 📊 **Audit Logging** | All RAG queries are logged for compliance |
-| 🖥️ **Web UI** | Built-in glassmorphism dashboard — no Swagger needed |
+|  **JWT Authentication** | Secure login & registration with Bearer tokens |
+|  **Role-Based Access Control** | Admin, Financial Analyst, Auditor, Client roles |
+|  **Multi-Tenant Isolation** | Clients only see their own company's documents |
+|  **Document Management** | Upload, list, update, delete PDF & TXT documents |
+|  **Semantic Search** | Vector similarity search using `all-MiniLM-L6-v2` embeddings |
+|  **Cross-Encoder Reranking** | Reranks Top-20 results to surface the best Top-5 |
+|  **RAG Q&A** | LLM-generated answers with source citations |
+|  **Audit Logging** | All RAG queries are logged for compliance |
+|  **Web UI** | Built-in glassmorphism dashboard — no Swagger needed |
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -55,7 +55,7 @@ This system solves that by:
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -101,7 +101,7 @@ You should see `(venv)` in your terminal prompt.
 pip install -r requirements.txt
 ```
 
-> ⚠️ First run downloads the embedding model (~90 MB) and reranker model (~70 MB). This is a **one-time download**.
+>  First run downloads the embedding model (~90 MB) and reranker model (~70 MB). This is a **one-time download**.
 
 ---
 
@@ -173,7 +173,7 @@ INFO:     Application startup complete.
 
 ---
 
-## 🖥️ Using the Web UI
+##  Using the Web UI
 
 ### Upload a Document
 1. Go to http://127.0.0.1:8000 → Log in as admin
@@ -198,7 +198,7 @@ Ready-to-use test documents are in the `sample_docs/` folder:
 
 ---
 
-## 📡 API Reference
+##  API Reference
 
 ### Authentication
 
@@ -305,7 +305,7 @@ A **Client** user from "Apple Inc." can only see and search documents where `com
 
 ---
 
-## 🧪 Running Tests
+##  Running Tests
 
 ```bash
 python -m pytest tests/test_flow.py -v
@@ -321,7 +321,7 @@ The test covers the full end-to-end flow: register → login → upload → sear
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 financial-rag-api/
@@ -358,7 +358,7 @@ financial-rag-api/
 
 ---
 
-## ⚙️ Environment Variables
+##  Environment Variables
 
 See `.env.example` for all options. Key variables:
 
@@ -374,7 +374,7 @@ See `.env.example` for all options. Key variables:
 
 ---
 
-## 🔒 Security Notes
+##  Security Notes
 
 - Change the default admin password immediately in production
 - Set a strong, unique `SECRET_KEY` in your `.env`
@@ -384,13 +384,8 @@ See `.env.example` for all options. Key variables:
 
 ---
 
-## 📜 License
 
-This project is licensed under the **MIT License**.
 
----
 
-## 🙋 Author
 
-**Shree Londhe**
-GitHub: [Shree-2004](https://github.com/Shree-2004)
+
