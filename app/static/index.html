@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Document Management & RAG System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #08090c;
+            --panel-bg: rgba(17, 18, 23, 0.75);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --primary-glow: #9d4edd;
+            --secondary-glow: #00f5d4;
+            --accent: #f72585;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(157, 78, 221, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 245, 212, 0.05) 0%, transparent 40%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Header Styling */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .logo-section h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-glow) 30%, var(--secondary-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-section p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: 0.2rem;
+        }
+
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .role-pill {
+            background: linear-gradient(135deg, rgba(157, 78, 221, 0.2), rgba(0, 245, 212, 0.2));
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.15rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .logout-btn {
+            background: transparent;
+            color: var(--accent);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: opacity 0.2s;
+        }
+
+        .logout-btn:hover {
+            opacity: 0.8;
+        }
+
+        /* Glassmorphism Panel */
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            margin-bottom: 2rem;
+        }
+
+        .panel-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 0.75rem;
+        }
+
+        .panel-title::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 18px;
+            background: var(--primary-glow);
+            border-radius: 2px;
+        }
+
+        /* Grid System */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Forms controls */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.4rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-glow);
+            box-shadow: 0 0 10px rgba(157, 78, 221, 0.15);
+        }
+
+        select.form-control option {
+            background-color: #121318;
+            color: var(--text-primary);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary-glow), var(--accent));
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(157, 78, 221, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: none;
+            transform: none;
+        }
+
+        /* Auth Screen */
+        .auth-container {
+            max-width: 450px;
+            margin: 8vh auto 0 auto;
+        }
+
+        .auth-toggle {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-toggle-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 0.5rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .auth-toggle-btn.active {
+            color: var(--text-primary);
+            border-color: var(--primary-glow);
+        }
+
+        /* Document Table styling */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            padding: 0.75rem 1rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+        }
+
+        td {
+            padding: 1rem;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .badge-type {
+            background: rgba(0, 245, 212, 0.1);
+            color: var(--secondary-glow);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .action-icon-delete {
+            color: var(--danger);
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .action-icon-delete:hover {
+            opacity: 0.7;
+        }
+
+        /* RAG Search styling */
+        .search-box {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-box input {
+            flex: 1;
+        }
+
+        .search-box .btn {
+            width: auto;
+        }
+
+        .results-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .chunk-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.25rem;
+            transition: all 0.3s;
+        }
+
+        .chunk-card:hover {
+            border-color: var(--primary-glow);
+            background: rgba(157, 78, 221, 0.02);
+            box-shadow: 0 4px 20px rgba(157, 78, 221, 0.05);
+        }
+
+        .chunk-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            padding-bottom: 0.4rem;
+        }
+
+        .chunk-meta {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .chunk-score {
+            font-weight: 600;
+            color: var(--secondary-glow);
+        }
+
+        .chunk-text {
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Notifications */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #121318;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--primary-glow);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 1000;
+            transform: translateY(150%);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+        }
+
+        /* Utility classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-muted {
+            color: var(--text-secondary);
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Auth Screen -->
+    <div id="auth-screen" class="auth-container">
+        <div class="panel">
+            <div class="auth-toggle">
+                <button id="toggle-login" class="auth-toggle-btn active" onclick="switchAuthTab('login')">Log In</button>
+                <button id="toggle-register" class="auth-toggle-btn" onclick="switchAuthTab('register')">Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="login-username">Username</label>
+                    <input type="text" id="login-username" class="form-control" required placeholder="Enter username">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" class="form-control" required placeholder="Enter password">
+                </div>
+                <button type="submit" class="btn" id="login-btn">Log In</button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" class="hidden" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="reg-username">Username</label>
+                    <input type="text" id="reg-username" class="form-control" required placeholder="Pick a username">
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Password</label>
+                    <input type="password" id="reg-password" class="form-control" required placeholder="Create a password">
+                </div>
+                <div class="form-group">
+                    <label for="reg-company">Company Name</label>
+                    <input type="text" id="reg-company" class="form-control" placeholder="Acme Corp, Beta Inc, or Internal">
+                </div>
+                <button type="submit" class="btn" id="reg-btn">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard Screen -->
+    <div id="dashboard-screen" class="container hidden">
+        <header>
+            <div class="logo-section">
+                <h1>Financial DMS & RAG Engine</h1>
+                <p>Semantic Vector Search with RBAC Controls & Cross-Encoder Reranking</p>
+            </div>
+            <div class="user-badge">
+                <span id="user-display-name">Username</span>
+                <span id="user-display-role" class="role-pill">Role</span>
+                <button class="logout-btn" onclick="handleLogout()">Log Out</button>
+            </div>
+        </header>
+
+        <!-- Admin Role Management Panel (Only visible to Admin) -->
+        <div id="admin-panel" class="panel hidden">
+            <div class="panel-title">Role & Permissions Assignment (Admin Only)</div>
+            <form onsubmit="handleAssignRole(event)" style="display: flex; gap: 1.5rem; align-items: flex-end;">
+                <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                    <label for="assign-user-id">User ID (Integer)</label>
+                    <input type="number" id="assign-user-id" class="form-control" required placeholder="e.g. 2">
+                </div>
+                <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                    <label for="assign-role-name">Assign Role</label>
+                    <select id="assign-role-name" class="form-control">
+                        <option value="Admin">Admin (Full Access)</option>
+                        <option value="Financial Analyst">Financial Analyst (Upload & Search)</option>
+                        <option value="Auditor">Auditor (View All Chunks & Docs)</option>
+                        <option value="Client">Client (Restricted to Company)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn" style="width: auto;">Assign Role</button>
+            </form>
+        </div>
+
+        <div class="grid-2">
+            <!-- Left Column: Upload (Analyst/Admin) & File List -->
+            <div>
+                <!-- Upload Panel -->
+                <div id="upload-panel" class="panel">
+                    <div class="panel-title">Upload Financial Document</div>
+                    <form id="upload-form" onsubmit="handleUpload(event)">
+                        <div class="form-group">
+                            <label for="doc-title">Document Title</label>
+                            <input type="text" id="doc-title" class="form-control" required placeholder="e.g. Q3 Earnings Statement">
+                        </div>
+                        <div class="form-group">
+                            <label for="doc-company">Company Name</label>
+                            <input type="text" id="doc-company" class="form-control" required placeholder="e.g. Acme Corp">
+                        </div>
+                        <div class="form-group">
+                            <label for="doc-type">Document Type</label>
+                            <select id="doc-type" class="form-control">
+                                <option value="report">Report</option>
+                                <option value="invoice">Invoice</option>
+                                <option value="contract">Contract</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="doc-file">Select PDF or TXT File</label>
+                            <input type="file" id="doc-file" class="form-control" required accept=".pdf,.txt">
+                        </div>
+                        <button type="submit" class="btn" id="upload-btn">Upload & Index</button>
+                    </form>
+                </div>
+
+                <!-- Document List Panel -->
+                <div class="panel">
+                    <div class="panel-title">Indexed Documents</div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Company</th>
+                                    <th>Type</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="document-table-body">
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">No documents uploaded.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: RAG Semantic Search -->
+            <div>
+                <div class="panel">
+                    <div class="panel-title">RAG Semantic Search Engine</div>
+                    <div class="search-box">
+                        <input type="text" id="search-query" class="form-control" placeholder="Ask a financial question, e.g. financial risk of debt ratio...">
+                        <button class="btn" onclick="handleSearch()" id="search-btn">Search</button>
+                    </div>
+                    
+                    <div style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                        ⚡ Vector DB Retrieve (Top 20 Chunks) ➔ Cross-Encoder Rerank ➔ Top 5 Results
+                    </div>
+
+                    <div id="search-results-list" class="results-container">
+                        <div class="text-center text-muted" style="padding: 2rem 0;">
+                            Search results will be displayed here.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast">Toast Message</div>
+
+    <script>
+        // State variables
+        let token = localStorage.getItem("dms_token") || null;
+        let currentUser = null;
+
+        // Initialize application
+        window.addEventListener("load", () => {
+            if (token) {
+                fetchUserProfile();
+            } else {
+                showAuthScreen();
+            }
+        });
+
+        function showAuthScreen() {
+            document.getElementById("auth-screen").classList.remove("hidden");
+            document.getElementById("dashboard-screen").classList.add("hidden");
+        }
+
+        function showDashboard() {
+            document.getElementById("auth-screen").classList.add("hidden");
+            document.getElementById("dashboard-screen").classList.remove("hidden");
+            
+            document.getElementById("user-display-name").textContent = currentUser.username;
+            
+            // Set role display
+            const roles = currentUser.roles.map(r => r.name);
+            document.getElementById("user-display-role").textContent = roles.join(", ");
+
+            // Show admin panel if Admin
+            if (roles.includes("Admin")) {
+                document.getElementById("admin-panel").classList.remove("hidden");
+                document.getElementById("upload-panel").classList.remove("hidden");
+            } else {
+                document.getElementById("admin-panel").classList.add("hidden");
+                
+                // Only Analyst and Admin can upload
+                if (roles.includes("Financial Analyst")) {
+                    document.getElementById("upload-panel").classList.remove("hidden");
+                } else {
+                    document.getElementById("upload-panel").classList.add("hidden");
+                }
+            }
+
+            // Load documents lists
+            fetchDocuments();
+        }
+
+        function switchAuthTab(tab) {
+            if (tab === 'login') {
+                document.getElementById("login-form").classList.remove("hidden");
+                document.getElementById("register-form").classList.add("hidden");
+                document.getElementById("toggle-login").classList.add("active");
+                document.getElementById("toggle-register").classList.remove("active");
+            } else {
+                document.getElementById("login-form").classList.add("hidden");
+                document.getElementById("register-form").classList.remove("hidden");
+                document.getElementById("toggle-login").classList.remove("active");
+                document.getElementById("toggle-register").classList.add("active");
+            }
+        }
+
+        // Display notifications
+        function notify(message, isError = false) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.style.borderLeftColor = isError ? 'var(--danger)' : 'var(--success)';
+            toast.classList.add("show");
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 3000);
+        }
+
+        // Fetch User profile using permissions endpoints or parsing
+        async function fetchUserProfile() {
+            try {
+                // To get user profile, we can register an endpoint or decode JWT.
+                // We'll decode JWT username and look up from /users/{id}/roles
+                // Let's decode client-side roughly (or use a endpoint if available).
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                const decoded = JSON.parse(jsonPayload);
+                const username = decoded.sub;
+
+                // For this demo, let's fetch profile by logging in or fetching doc lists
+                // We will call a user endpoint to get ID and roles.
+                // Let's create an endpoint on main or mock it based on token.
+                // Wait, we have GET /users/{id}/roles and GET /users/{id}/permissions.
+                // To fetch roles we need the user ID. Let's make a mock check on /documents
+                // as a test to see if token works, or just query roles.
+                // Actually, let's get the profile. Since register and login return username, we can
+                // store the ID on login, or we can check.
+                // Let's call /documents first to verify token is valid.
+                const res = await fetch(`${BASE_URL}/documents`, {
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                if (res.status_code === 401) {
+                    throw new Error("Token expired");
+                }
+
+                // Since we don't have a direct /users/me, let's parse payload and fetch info
+                // To make this robust, we can parse user roles/permissions dynamically by requesting
+                // roles from admin. But wait! Clients might not have roles:manage permissions.
+                // So let's store the user profile directly in localStorage when logging in, and retrieve it!
+                // This is extremely simple and works perfectly!
+                const storedUser = localStorage.getItem("dms_user");
+                if (storedUser) {
+                    currentUser = JSON.parse(storedUser);
+                    showDashboard();
+                } else {
+                    // Fallback: If not stored, log out
+                    handleLogout();
+                }
+            } catch (err) {
+                console.error("Auth verify failed:", err);
+                handleLogout();
+            }
+        }
+
+        // Authentication Handlers
+        async function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById("login-username").value;
+            const password = document.getElementById("login-password").value;
+            
+            const btn = document.getElementById("login-btn");
+            btn.innerHTML = `<span class="loading-spinner"></span>`;
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(`/auth/login`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.detail || "Login failed");
+
+                token = data.access_token;
+                localStorage.setItem("dms_token", token);
+
+                // Now we need to bootstrap who this user is. We will fetch they roles/permissions.
+                // We'll perform a quick register response or construct the user.
+                // Since register returns user metadata, we can register the same or login and query.
+                // Wait, let's look up roles.
+                // Because a client user doesn't have roles:manage, we can't query /users/{id}/roles directly
+                // if they are not Admin.
+                // To solve this, let's make an endpoint in main.py or just return it in auth.py.
+                // Wait! Since `/auth/login` only returns Token, how does the frontend know who we are?
+                // Let's decode the JWT!
+                // Wait, does the JWT contain the roles or id?
+                // In app/auth/router.py, create_access_token takes: {"sub": user.username}.
+                // So the token has no ID.
+                // Let's see: how can the client know the ID?
+                // We can add a helper endpoint `GET /auth/me` to get the logged-in user details!
+                // This is an extremely common REST pattern and makes the client UI work perfectly!
+                // Let's implement `/auth/me` in app/auth/router.py! That is a very minor, smart tweak.
+                // Let's add `/auth/me` first!
+                // For now, let's fetch /auth/me in this code. We'll update the router next.
+                const profileRes = await fetch(`/auth/me`, {
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+                
+                if (!profileRes.ok) throw new Error("Failed to load profile details");
+                const profileData = await profileRes.json();
+                
+                currentUser = profileData;
+                localStorage.setItem("dms_user", JSON.stringify(currentUser));
+                
+                notify("Login successful!");
+                showDashboard();
+            } catch (err) {
+                notify(err.message, true);
+            } finally {
+                btn.innerHTML = "Log In";
+                btn.disabled = false;
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            const username = document.getElementById("reg-username").value;
+            const password = document.getElementById("reg-password").value;
+            const company_name = document.getElementById("reg-company").value || null;
+
+            const btn = document.getElementById("reg-btn");
+            btn.innerHTML = `<span class="loading-spinner"></span>`;
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(`/auth/register`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password, company_name })
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.detail || "Registration failed");
+
+                notify("Account created successfully! Please log in.");
+                switchAuthTab('login');
+                document.getElementById("login-username").value = username;
+                document.getElementById("login-password").value = password;
+            } catch (err) {
+                notify(err.message, true);
+            } finally {
+                btn.innerHTML = "Create Account";
+                btn.disabled = false;
+            }
+        }
+
+        function handleLogout() {
+            token = null;
+            currentUser = null;
+            localStorage.removeItem("dms_token");
+            localStorage.removeItem("dms_user");
+            showAuthScreen();
+            notify("Logged out successfully");
+        }
+
+        // Admin: Assign Role
+        async function handleAssignRole(e) {
+            e.preventDefault();
+            const user_id = parseInt(document.getElementById("assign-user-id").value);
+            const role_name = document.getElementById("assign-role-name").value;
+
+            try {
+                const res = await fetch(`/users/assign-role`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ user_id, role_name })
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.detail || "Failed to assign role");
+
+                notify(data.message || "Role assigned successfully!");
+            } catch (err) {
+                notify(err.message, true);
+            }
+        }
+
+        // Documents: Fetch Lists
+        async function fetchDocuments() {
+            try {
+                const res = await fetch(`/documents`, {
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                if (!res.ok) throw new Error("Failed to load documents");
+                const docs = await res.json();
+
+                const tbody = document.getElementById("document-table-body");
+                if (docs.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted">No documents uploaded.</td></tr>`;
+                    return;
+                }
+
+                const roles = currentUser.roles.map(r => r.name);
+                const canDelete = roles.includes("Admin");
+
+                tbody.innerHTML = docs.map(doc => `
+                    <tr>
+                        <td style="font-weight: 500;">${doc.title}</td>
+                        <td>${doc.company_name}</td>
+                        <td><span class="badge-type">${doc.document_type}</span></td>
+                        <td>
+                            ${canDelete ? `<button class="action-icon-delete" onclick="handleDeleteDoc('${doc.document_id}')">Delete</button>` : `<span class="text-muted" style="font-size: 0.8rem;">Read-Only</span>`}
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                notify(err.message, true);
+            }
+        }
+
+        // Documents: Upload
+        async function handleUpload(e) {
+            e.preventDefault();
+            const title = document.getElementById("doc-title").value;
+            const company_name = document.getElementById("doc-company").value;
+            const document_type = document.getElementById("doc-type").value;
+            const fileInput = document.getElementById("doc-file");
+
+            if (fileInput.files.length === 0) {
+                notify("Please select a file to upload", true);
+                return;
+            }
+
+            const btn = document.getElementById("upload-btn");
+            btn.innerHTML = `<span class="loading-spinner"></span>`;
+            btn.disabled = true;
+
+            const formData = new FormData();
+            formData.append("title", title);
+            formData.append("company_name", company_name);
+            formData.append("document_type", document_type);
+            formData.append("file", fileInput.files[0]);
+
+            try {
+                const res = await fetch(`/documents/upload`, {
+                    method: "POST",
+                    headers: { "Authorization": `Bearer ${token}` },
+                    body: formData
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.detail || "Upload failed");
+
+                notify("Document uploaded and indexed successfully!");
+                document.getElementById("upload-form").reset();
+                fetchDocuments();
+            } catch (err) {
+                notify(err.message, true);
+            } finally {
+                btn.innerHTML = "Upload & Index";
+                btn.disabled = false;
+            }
+        }
+
+        // Documents: Delete
+        async function handleDeleteDoc(docId) {
+            if (!confirm("Are you sure you want to delete this document and remove its embeddings from Qdrant?")) return;
+
+            try {
+                const res = await fetch(`/documents/${docId}`, {
+                    method: "DELETE",
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.detail || "Failed to delete");
+
+                notify("Document and embeddings deleted successfully.");
+                fetchDocuments();
+            } catch (err) {
+                notify(err.message, true);
+            }
+        }
+
+        // RAG Semantic Search
+        async function handleSearch() {
+            const query = document.getElementById("search-query").value;
+            if (!query.trim()) {
+                notify("Please enter a search query", true);
+                return;
+            }
+
+            const btn = document.getElementById("search-btn");
+            btn.innerHTML = `<span class="loading-spinner"></span>`;
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(`/rag/search`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ query })
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.detail || "Search failed");
+
+                const list = document.getElementById("search-results-list");
+                if (data.length === 0) {
+                    list.innerHTML = `<div class="text-center text-muted" style="padding: 2rem 0;">No matching financial chunks found.</div>`;
+                    return;
+                }
+
+                list.innerHTML = data.map((hit, idx) => `
+                    <div class="chunk-card">
+                        <div class="chunk-header">
+                            <div class="chunk-meta">
+                                <span>Chunk #${hit.chunk_index}</span>
+                                <span>Doc ID: ${hit.document_id.slice(0,8)}...</span>
+                                <span class="badge-type">${hit.company_name}</span>
+                            </div>
+                            <div class="chunk-score">Relevance Match: ${hit.score.toFixed(4)}</div>
+                        </div>
+                        <div class="chunk-text">${hit.text}</div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                notify(err.message, true);
+                document.getElementById("search-results-list").innerHTML = `<div class="text-center text-muted" style="padding: 2rem 0; color: var(--danger);">${err.message}</div>`;
+            } finally {
+                btn.innerHTML = "Search";
+                btn.disabled = false;
+            }
+        }
+        
+        // Define BASE_URL dynamically
+        const BASE_URL = window.location.origin;
+    </script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+FINANCIAL SERVICES AGREEMENT & CONTRACT
+
+CONTRACT NUMBER: FSA-2023-NXG-0291
+DATE OF AGREEMENT: January 1, 2023
+EFFECTIVE PERIOD: January 1, 2023 – December 31, 2025 (3-Year Term)
+
+PARTIES TO THIS AGREEMENT
+CLIENT: Nexgen Capital Partners LP
+         88 Park Avenue, Suite 3200, New York, NY 10016
+         ("Client")
+
+SERVICE PROVIDER: Pinnacle Advisory Group Inc.
+                   1 Financial Plaza, Boston, MA 02110
+                   ("Advisor")
+
+RECITALS
+WHEREAS, Client desires to engage Advisor for comprehensive financial advisory, portfolio management, and risk analysis services; and
+WHEREAS, Advisor represents that it has the expertise and capability to provide such services;
+NOW THEREFORE, in consideration of the mutual covenants herein, the parties agree as follows:
+
+ARTICLE 1 — SCOPE OF SERVICES
+1.1 Portfolio Management: Advisor shall manage Client's investment portfolio with an initial AUM of $250,000,000 (Two Hundred Fifty Million USD).
+1.2 Risk Assessment: Monthly Value-at-Risk (VaR) reports at 95% and 99% confidence intervals.
+1.3 Financial Reporting: Quarterly performance attribution reports benchmarked against S&P 500.
+1.4 Compliance: Ensure all investments comply with Client's Investment Policy Statement (IPS).
+1.5 Advisory Calls: Minimum bi-weekly calls with Client's CFO and investment committee.
+
+ARTICLE 2 — FEES AND COMPENSATION
+2.1 Management Fee: 0.75% per annum on Assets Under Management, billed quarterly in arrears.
+    - Year 1 Fee Estimate: $1,875,000 (based on $250M AUM)
+2.2 Performance Fee: 10% of returns exceeding the hurdle rate of 8% per annum (high-water mark applies).
+2.3 Transaction Fees: No additional transaction fees for standard equity and fixed income trades.
+2.4 Fee Schedule:
+    - Q1 2023 Fee: $468,750 (due April 15, 2023)
+    - Q2 2023 Fee: Adjusted based on quarter-end AUM
+    - Q3 2023 Fee: Adjusted based on quarter-end AUM
+    - Q4 2023 Fee: Adjusted based on quarter-end AUM
+
+ARTICLE 3 — FINANCIAL RISK DISCLOSURES
+3.1 Market Risk: Investment returns are subject to market volatility. Past performance does not guarantee future results.
+3.2 Liquidity Risk: Certain portfolio positions may have limited liquidity, potentially requiring extended periods to liquidate at fair value.
+3.3 Concentration Risk: Client's IPS permits maximum 15% allocation to any single security.
+3.4 Credit Risk: Fixed income holdings rated below BBB- (investment grade) are capped at 10% of total portfolio.
+3.5 Currency Risk: International equity exposure capped at 30% of portfolio; currency hedging strategy to be agreed quarterly.
+3.6 Leverage Policy: No leverage permitted under this agreement without explicit written consent from Client's Board.
+
+ARTICLE 4 — PERFORMANCE BENCHMARKS
+4.1 Primary Benchmark: S&P 500 Total Return Index
+4.2 Secondary Benchmark: 60/40 Blend (60% S&P 500 / 40% Bloomberg Barclays Aggregate Bond Index)
+4.3 Target Return: 10-12% annualized total return over full market cycle
+4.4 Maximum Drawdown Tolerance: -15% in any rolling 12-month period before mandatory review
+
+ARTICLE 5 — REPORTING OBLIGATIONS
+5.1 Advisor shall provide:
+    - Daily: Portfolio NAV and cash position summary
+    - Weekly: Market commentary and portfolio snapshot
+    - Monthly: Full performance attribution and risk report
+    - Quarterly: Comprehensive investment review with forward outlook
+    - Annually: Full year audited performance report
+
+ARTICLE 6 — TERMINATION
+6.1 Either party may terminate with 90 days written notice.
+6.2 Early termination by Client before 18 months shall incur a breakage fee of $500,000.
+6.3 Immediate termination permitted in case of material breach, fraud, or insolvency.
+
+ARTICLE 7 — GOVERNING LAW
+This Agreement shall be governed by the laws of the State of New York.
+
+ARTICLE 8 — DISPUTE RESOLUTION
+All disputes shall be resolved through binding arbitration under FINRA rules in New York City.
+
+SIGNATURES
+Client: _________________________ Date: January 1, 2023
+        James Hartwell, Managing Partner, Nexgen Capital Partners LP
+
+Advisor: ________________________ Date: January 1, 2023
+         Dr. Patricia Moore, CEO, Pinnacle Advisory Group Inc.

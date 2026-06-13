@@ -1,0 +1,65 @@
+GLOBAL TECH SOLUTIONS LTD. - INVOICE #INV-2023-00847
+
+INVOICE DETAILS
+Invoice Number: INV-2023-00847
+Invoice Date: October 15, 2023
+Due Date: November 14, 2023 (Net 30 Terms)
+Payment Status: OUTSTANDING
+
+VENDOR INFORMATION
+Global Tech Solutions Ltd.
+123 Silicon Valley Road, Suite 400
+San Francisco, CA 94105
+Tax ID: 87-4523109
+Bank: Chase Business Banking
+Account: 9834-2211-0047
+Routing: 021000021
+
+BILL TO
+Meridian Financial Corp.
+Accounts Payable Department
+500 Wall Street, Floor 12
+New York, NY 10005
+Contact: Sarah Chen (schen@meridianfinancial.com)
+
+SERVICES RENDERED
+
+| Description | Quantity | Unit Price | Total |
+|---|---|---|---|
+| Cloud Infrastructure Management (Monthly) | 1 | $45,000.00 | $45,000.00 |
+| Cybersecurity Audit & Penetration Testing | 1 | $28,500.00 | $28,500.00 |
+| AI/ML Data Pipeline Development (80 hrs) | 80 hrs | $350/hr | $28,000.00 |
+| Enterprise Software Licenses (Q4 2023) | 15 seats | $1,200/seat | $18,000.00 |
+| 24/7 Technical Support & SLA Monitoring | 1 | $12,000.00 | $12,000.00 |
+| Data Migration & Integration Services | 1 | $19,750.00 | $19,750.00 |
+
+FINANCIAL SUMMARY
+Subtotal: $151,250.00
+Discount (Preferred Client - 5%): -$7,562.50
+Taxable Amount: $143,687.50
+Sales Tax (8.75% - CA): $12,572.66
+TOTAL AMOUNT DUE: $156,260.16
+
+PAYMENT TERMS & CONDITIONS
+- Net 30 days from invoice date
+- Late payment penalty: 1.5% per month on outstanding balance
+- Early payment discount: 2% if paid within 10 days (save $3,125.20)
+- Accepted payments: Wire Transfer, ACH, Check
+- Purchase Order Reference: PO-MFC-2023-0934
+
+CONTRACT REFERENCE
+This invoice is issued under Master Service Agreement (MSA-2022-GTS-MFC) signed February 1, 2022, and subsequent Statement of Work (SOW-2023-Q4-001) dated September 1, 2023.
+
+AGING ANALYSIS (Vendor Account History - Meridian Financial Corp)
+- Current (0-30 days): $156,260.16 (this invoice)
+- 31-60 days: $0.00
+- 61-90 days: $0.00
+- 90+ days: $0.00
+- Total Outstanding: $156,260.16
+- Credit Limit: $500,000.00
+- Available Credit: $343,739.84
+
+NOTES
+Services delivered as per agreed milestones. All cloud infrastructure uptime SLAs met at 99.97% availability for Q3 2023. Cybersecurity audit report delivered September 30, 2023. No disputed items on this invoice.
+
+For billing inquiries: billing@globaltechsolutions.com | +1 (415) 882-9900
