@@ -1,31 +1,66 @@
-# Financial Document Management System with RAG
+# 💼 Financial Document Management System with RAG
 
-A FastAPI application for managing financial documents with semantic search, AI-powered Q&A (RAG), and role-based access control.
+> A production-ready **FastAPI** application for managing financial documents with AI-powered semantic search, LLM-generated answers (RAG), and enterprise-grade role-based access control.
+
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat&logo=python&logoColor=white)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![LangChain](https://img.shields.io/badge/LangChain-0.3+-1C3C3C?style=flat&logo=chainlink&logoColor=white)](https://langchain.com)
+[![Qdrant](https://img.shields.io/badge/Qdrant-Vector_DB-DC143C?style=flat)](https://qdrant.tech)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
 
-## Tech Stack
+## 🌟 What This Project Does
 
-| Component | Technology |
+Organizations deal with hundreds of financial documents — reports, invoices, contracts, audits. Finding specific information across all of them is slow and manual.
+
+This system solves that by:
+1. **Storing** financial documents with metadata and access control
+2. **Indexing** them into a vector database using AI embeddings
+3. **Searching** semantically — find relevant content even if the exact keywords don't match
+4. **Answering** natural language questions using an LLM (Ollama/OpenAI/Gemini)
+
+---
+
+## ✨ Key Features
+
+| Feature | Description |
 |---|---|
-| API Framework | FastAPI + Uvicorn |
-| Relational DB | SQLAlchemy + SQLite |
-| Vector DB | Qdrant (local folder) |
-| Embeddings | `all-MiniLM-L6-v2` (SentenceTransformers) |
-| Reranking | `cross-encoder/ms-marco-MiniLM-L-6-v2` |
-| LLM / Generation | Ollama (`llama3`) — local & free |
-| Chunking | LangChain RecursiveCharacterTextSplitter |
-| Auth | JWT Bearer tokens |
+| 🔐 **JWT Authentication** | Secure login & registration with Bearer tokens |
+| 👥 **Role-Based Access Control** | Admin, Financial Analyst, Auditor, Client roles |
+| 🏢 **Multi-Tenant Isolation** | Clients only see their own company's documents |
+| 📄 **Document Management** | Upload, list, update, delete PDF & TXT documents |
+| 🔍 **Semantic Search** | Vector similarity search using `all-MiniLM-L6-v2` embeddings |
+| 🏆 **Cross-Encoder Reranking** | Reranks Top-20 results to surface the best Top-5 |
+| 🤖 **RAG Q&A** | LLM-generated answers with source citations |
+| 📊 **Audit Logging** | All RAG queries are logged for compliance |
+| 🖥️ **Web UI** | Built-in glassmorphism dashboard — no Swagger needed |
 
 ---
 
-## Step-by-Step: How to Run
+## 🛠️ Tech Stack
 
-### Step 1 — Prerequisites
+| Layer | Technology |
+|---|---|
+| **API Framework** | FastAPI + Uvicorn |
+| **Relational Database** | SQLAlchemy + SQLite (PostgreSQL-ready) |
+| **Vector Database** | Qdrant (local folder, no Docker needed) |
+| **Embeddings** | SentenceTransformers `all-MiniLM-L6-v2` |
+| **Reranking** | Cross-Encoder `ms-marco-MiniLM-L-6-v2` |
+| **LLM / Generation** | LangChain + Ollama (`llama3`) — local & free |
+| **Document Parsing** | LangChain `RecursiveCharacterTextSplitter` |
+| **Auth** | JWT Bearer Tokens (`python-jose`) |
+| **Password Hashing** | `bcrypt` |
+| **Testing** | `pytest` + `TestClient` |
 
-Make sure you have installed:
-- **Python 3.10+** → https://python.org/downloads
-- **Git** (optional, to clone)
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **Python 3.10 or higher** → https://python.org/downloads
+- **Git** → https://git-scm.com
 
 Check your Python version:
 ```bash
@@ -34,71 +69,80 @@ python --version
 
 ---
 
-### Step 2 — Navigate to the Project
+### Step 1 — Clone the Repository
 
 ```bash
-cd c:\Users\spand\Downloads\SHREESTAAASK\financial-rag
+git clone https://github.com/Shree-2004/financial-rag-api.git
+cd financial-rag-api
 ```
 
 ---
 
-### Step 3 — Create & Activate a Virtual Environment
+### Step 2 — Create & Activate a Virtual Environment
 
 ```bash
-# Create the virtual environment
+# Create virtual environment
 python -m venv venv
 
-# Activate it (Windows)
+# Activate (Windows)
 venv\Scripts\activate
+
+# Activate (Mac/Linux)
+source venv/bin/activate
 ```
 
-You should see `(venv)` appear in your terminal prompt.
+You should see `(venv)` in your terminal prompt.
 
 ---
 
-### Step 4 — Install Dependencies
+### Step 3 — Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-> ⚠️ This will download the embedding model (~90 MB) and cross-encoder (~70 MB) on first run. This is a one-time download.
+> ⚠️ First run downloads the embedding model (~90 MB) and reranker model (~70 MB). This is a **one-time download**.
 
 ---
 
-### Step 5 — Configure Environment Variables
-
-Copy the example file and edit if needed:
+### Step 4 — Configure Environment Variables
 
 ```bash
-copy .env.example .env
+# Copy the example environment file
+copy .env.example .env        # Windows
+cp .env.example .env          # Mac/Linux
 ```
 
-Open `.env` and at minimum set a proper `SECRET_KEY`:
+Open `.env` and set a secure `SECRET_KEY`:
+
 ```env
-SECRET_KEY=any-long-random-string-here-at-least-32-chars
-```
+SECRET_KEY=replace-this-with-a-long-random-string-minimum-32-characters
 
-Everything else works out-of-the-box with the defaults (SQLite + local Qdrant + Ollama).
+# All other settings work out-of-the-box with defaults:
+DATABASE_URL=sqlite:///./financial_dms.db
+QDRANT_PATH=./qdrant_storage
+LLM_PROVIDER=ollama
+LLM_MODEL=llama3
+```
 
 ---
 
-### Step 6 — (Optional) Set Up Ollama for AI-Generated Answers
+### Step 5 — (Optional) Set Up Ollama for AI-Generated Answers
 
-This is only needed for the `POST /rag/query` endpoint (full RAG with LLM).  
-Skip this step if you only want semantic search (`POST /rag/search`).
+This enables the `POST /rag/query` endpoint (full LLM answers).
+Skip this step if you only need semantic search.
 
-1. Download and install Ollama: https://ollama.com/download
-2. Open a **new terminal** and run:
+1. Download Ollama: https://ollama.com/download
+2. In a **new terminal**, run:
 ```bash
 ollama pull llama3
 ollama serve
 ```
-3. Leave that terminal open while using the app.
+3. Keep that terminal open while using the app.
 
 ---
 
-### Step 7 — Start the Server
+### Step 6 — Start the Server
 
 ```bash
 python -m uvicorn app.main:app --reload
@@ -106,143 +150,162 @@ python -m uvicorn app.main:app --reload
 
 You will see:
 ```
-INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Uvicorn running on http://127.0.0.1:8000
 INFO:     Application startup complete.
 ```
 
-> On first start, the app automatically:
-> - Creates all database tables (SQLite)
-> - Seeds 4 roles: Admin, Financial Analyst, Auditor, Client
-> - Creates a default admin user: **admin / adminpass**
+> **On first startup, the app automatically:**
+> - Creates all database tables
+> - Seeds 4 roles with permissions (Admin, Financial Analyst, Auditor, Client)
+> - Creates a default admin user: **`admin` / `adminpass`**
 
 ---
 
-### Step 8 — Open the API Docs (Swagger UI)
+### Step 7 — Open the App
 
-Visit in your browser:
-```
-http://127.0.0.1:8000/docs
-```
+| Interface | URL |
+|---|---|
+| **Web UI Dashboard** | http://127.0.0.1:8000 |
+| **API Docs (Swagger)** | http://127.0.0.1:8000/docs |
+| **API Docs (Redoc)** | http://127.0.0.1:8000/redoc |
 
-To authenticate in Swagger:
-1. Click the **Authorize 🔓** button (top right)
-2. Enter `admin` / `adminpass`
-3. Click **Authorize** → **Close**
-4. All endpoints are now authenticated
+**Login with:** Username: `admin` | Password: `adminpass`
 
 ---
 
-## Quick Usage Guide
+## 🖥️ Using the Web UI
 
-### 1. Register a new user
-```
-POST /auth/register
-{
-  "username": "alice",
-  "password": "securepass123",
-  "company_name": "Acme Corp"
-}
-```
+### Upload a Document
+1. Go to http://127.0.0.1:8000 → Log in as admin
+2. Fill in **Document Title**, **Company Name**, **Document Type**
+3. Click **Choose File** → select a `.pdf` or `.txt` file
+4. Click **Upload & Index** — the document is automatically embedded into Qdrant
 
-### 2. Login and get a token
-```
+### Semantic Search
+- Type any financial question in the search box
+- e.g. *"What is Apple's debt to equity ratio?"*
+- Returns the top-5 most relevant chunks from all your documents
+
+### Sample Documents
+Ready-to-use test documents are in the `sample_docs/` folder:
+
+| File | Company | Type |
+|---|---|---|
+| `apple_annual_report_2023.txt` | Apple Inc. | report |
+| `tesla_q3_2023_earnings.txt` | Tesla Inc. | report |
+| `global_tech_invoice_2023.txt` | Global Ltd | invoice |
+| `nexgen_advisory_contract_2023.txt` | Nextgen Ltd | contract |
+
+---
+
+## 📡 API Reference
+
+### Authentication
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/auth/register` | Register a new user |
+| `POST` | `/auth/login` | Login → returns JWT token |
+| `GET` | `/auth/me` | Get current logged-in user info |
+
+**Login Request:**
+```json
 POST /auth/login
 {
-  "username": "alice",
-  "password": "securepass123"
+  "username": "admin",
+  "password": "adminpass"
 }
 ```
-Returns: `{ "access_token": "eyJ...", "token_type": "bearer" }`
-
-### 3. Upload a financial document
-```
-POST /documents/upload
-  title        = "Q3 Financial Report"
-  company_name = "Acme Corp"
-  document_type = "report"    ← must be: invoice | report | contract
-  file         = [attach .pdf or .txt file]
-```
-> The document is automatically chunked → embedded → stored in Qdrant.
-
-### 4. Search documents by metadata
-```
-GET /documents/search?document_type=report&company_name=Acme+Corp
-```
-
-### 5. Semantic search (returns raw chunks)
-```
-POST /rag/search
-{ "query": "financial risk related to high debt ratio" }
-```
-
-### 6. AI-powered Q&A (requires Ollama)
-```
-POST /rag/query
-{ "query": "What are the key financial risks in the Acme report?" }
-```
-Returns: `{ "answer": "Based on the documents...", "sources": [...] }`
-
-### 7. Assign a role (Admin only)
-```
-POST /users/assign-role
-{ "user_id": 2, "role_name": "Financial Analyst" }
+**Response:**
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiJ9...",
+  "token_type": "bearer"
+}
 ```
 
 ---
-
-## RBAC Permissions Matrix
-
-| Role | Upload Docs | Edit Docs | View All Docs | View Own Company | Semantic Search | Manage Roles |
-|---|---|---|---|---|---|---|
-| **Admin** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **Financial Analyst** | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
-| **Auditor** | ❌ | ❌ | ✅ | ✅ | ✅ | ❌ |
-| **Client** | ❌ | ❌ | ❌ | ✅ | ✅ (own company only) | ❌ |
-
----
-
-## Full API Endpoint Reference
-
-### Auth
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/auth/register` | Register new user |
-| POST | `/auth/login` | Login (JSON) → JWT token |
-| GET | `/auth/me` | Get current user info |
 
 ### Documents
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/documents/upload` | Upload a PDF or TXT document |
-| GET | `/documents` | List documents (with `?skip=0&limit=20`) |
-| GET | `/documents/search` | Filter by title, company, type, uploader |
-| GET | `/documents/{document_id}` | Get single document details |
-| PATCH | `/documents/{document_id}` | Update title / company / type |
-| DELETE | `/documents/{document_id}` | Delete document + embeddings |
 
-### RAG (Semantic Search & AI Q&A)
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/rag/search` | Semantic search → top-5 chunks (no LLM) |
-| POST | `/rag/query` | Full RAG → LLM-generated answer + sources |
-| GET | `/rag/context/{document_id}` | All stored chunks for a document |
-| POST | `/rag/index-document` | Manually re-index a document |
-| DELETE | `/rag/remove-document/{id}` | Remove document embeddings from Qdrant |
-| GET | `/rag/audit-log` | Admin: view all RAG query history |
+| Method | Endpoint | Description | Permission |
+|---|---|---|---|
+| `POST` | `/documents/upload` | Upload a PDF or TXT file | Analyst, Admin |
+| `GET` | `/documents` | List all documents (paginated) | All roles |
+| `GET` | `/documents/search` | Filter by title, company, type | All roles |
+| `GET` | `/documents/{document_id}` | Get single document | All roles |
+| `PATCH` | `/documents/{document_id}` | Update title/company/type | Analyst, Admin |
+| `DELETE` | `/documents/{document_id}` | Delete document + embeddings | Admin |
 
-### Roles & Users
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/roles/create` | Create a custom role (Admin) |
-| GET | `/roles` | List all roles (Admin) |
-| GET | `/roles/{role_id}` | Get role details (Admin) |
-| POST | `/users/assign-role` | Assign role to user (Admin) |
-| GET | `/users/{id}/roles` | Get user's roles |
-| GET | `/users/{id}/permissions` | Get user's permissions |
+**Upload Example:**
+```bash
+curl -X POST http://127.0.0.1:8000/documents/upload \
+  -H "Authorization: Bearer <your_token>" \
+  -F "title=Q3 Report" \
+  -F "company_name=Acme Corp" \
+  -F "document_type=report" \
+  -F "file=@report.pdf"
+```
 
 ---
 
-## Running Tests
+### RAG (Semantic Search & AI Q&A)
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/rag/search` | Semantic search → Top-5 chunks (no LLM) |
+| `POST` | `/rag/query` | Full RAG → LLM answer + source citations |
+| `GET` | `/rag/context/{document_id}` | All stored chunks for a document |
+| `POST` | `/rag/index-document` | Manually re-index a document |
+| `DELETE` | `/rag/remove-document/{id}` | Remove document from Qdrant |
+| `GET` | `/rag/audit-log` | Query history log (Admin only) |
+
+**Semantic Search:**
+```json
+POST /rag/search
+{ "query": "What is the debt to equity ratio?" }
+```
+
+**RAG Query (requires Ollama):**
+```json
+POST /rag/query
+{ "query": "Summarize the key financial risks in the Tesla report." }
+```
+
+---
+
+### Roles & Users (Admin Only)
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/roles` | List all roles |
+| `GET` | `/roles/{role_id}` | Get role details |
+| `POST` | `/roles/create` | Create a custom role |
+| `POST` | `/users/assign-role` | Assign a role to a user |
+| `GET` | `/users/{id}/roles` | Get a user's roles |
+| `GET` | `/users/{id}/permissions` | Get a user's permissions |
+
+---
+
+## 👥 Role-Based Access Control (RBAC)
+
+| Permission | Admin | Financial Analyst | Auditor | Client |
+|---|---|---|---|---|
+| Upload Documents | ✅ | ✅ | ❌ | ❌ |
+| Edit Documents | ✅ | ✅ | ❌ | ❌ |
+| View ALL Documents | ✅ | ✅ | ✅ | ❌ |
+| View Own Company Docs | ✅ | ✅ | ✅ | ✅ |
+| Semantic Search | ✅ | ✅ | ✅ | ✅ (own company) |
+| Delete Documents | ✅ | ❌ | ❌ | ❌ |
+| Manage Roles & Users | ✅ | ❌ | ❌ | ❌ |
+| View Audit Log | ✅ | ❌ | ❌ | ❌ |
+
+### Multi-Tenant Isolation
+A **Client** user from "Apple Inc." can only see and search documents where `company_name == "Apple Inc."`. Documents from other companies are completely hidden — even in search results.
+
+---
+
+## 🧪 Running Tests
 
 ```bash
 python -m pytest tests/test_flow.py -v
@@ -254,13 +317,80 @@ tests/test_flow.py::TestFinancialDMS::test_e2e_flow PASSED   [100%]
 1 passed in ~40s
 ```
 
+The test covers the full end-to-end flow: register → login → upload → search → delete.
+
 ---
 
-## Default Admin Credentials
+## 📁 Project Structure
 
-| Field | Value |
-|---|---|
-| Username | `admin` |
-| Password | `adminpass` |
+```
+financial-rag-api/
+│
+├── app/
+│   ├── main.py              # FastAPI app entry point, DB seeding
+│   ├── config.py            # Settings from .env
+│   ├── database.py          # SQLAlchemy engine & session
+│   │
+│   ├── auth/                # Authentication (JWT, login, register)
+│   ├── users/               # User & Role management, RBAC
+│   ├── documents/           # Document upload, listing, CRUD
+│   ├── rag/                 # Vector pipeline, LLM, audit log
+│   │   ├── pipeline.py      # Qdrant embed/search/rerank logic
+│   │   ├── llm.py           # LLM manager (Ollama/OpenAI/Gemini)
+│   │   ├── router.py        # RAG API endpoints
+│   │   └── models.py        # Audit log DB model
+│   │
+│   └── static/
+│       └── index.html       # Full web UI (single file)
+│
+├── tests/
+│   └── test_flow.py         # End-to-end integration test
+│
+├── sample_docs/             # Sample financial documents for testing
+├── storage/                 # Uploaded files (gitignored)
+├── qdrant_storage/          # Local vector DB (gitignored)
+│
+├── .env.example             # Environment variable template
+├── .gitignore               # Excludes secrets, DB, venv
+├── requirements.txt         # Python dependencies
+└── README.md
+```
 
-> ⚠️ Change these immediately in production!
+---
+
+## ⚙️ Environment Variables
+
+See `.env.example` for all options. Key variables:
+
+| Variable | Default | Description |
+|---|---|---|
+| `SECRET_KEY` | *(required)* | JWT signing secret — change this! |
+| `DATABASE_URL` | `sqlite:///./financial_dms.db` | Database connection string |
+| `QDRANT_PATH` | `./qdrant_storage` | Local Qdrant storage folder |
+| `LLM_PROVIDER` | `ollama` | LLM backend: `ollama`, `openai`, `gemini` |
+| `LLM_MODEL` | `llama3` | Model name |
+| `OLLAMA_BASE_URL` | `http://localhost:11434` | Ollama server URL |
+| `EMBEDDING_MODEL` | `all-MiniLM-L6-v2` | SentenceTransformer model |
+
+---
+
+## 🔒 Security Notes
+
+- Change the default admin password immediately in production
+- Set a strong, unique `SECRET_KEY` in your `.env`
+- Never commit your `.env` file — it is already in `.gitignore`
+- For production, switch from SQLite to PostgreSQL
+- Enable HTTPS in production using a reverse proxy (e.g., Nginx)
+
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+## 🙋 Author
+
+**Shree Londhe**
+GitHub: [Shree-2004](https://github.com/Shree-2004)
